@@ -1,0 +1,7 @@
+{
+    "/*": {
+      "target": "https://api.postmates.com",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }

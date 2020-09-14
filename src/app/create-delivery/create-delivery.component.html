@@ -1,0 +1,229 @@
+<section class="sample-app-content">
+    <h1>Create Delivery</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h3>Pick Up Location</h3>  
+        <p>
+            <label>First Name:</label>
+            <input type="text" formControlName="pickUpFirstName" [placeholder]="'First Name'">
+            <label>Last Name:</label>
+            <input type="text" formControlName="pickUpLastName"  [placeholder]="'Last Name'">
+        </p>
+        <p>
+            <label>Business Name:</label>
+            <input type="text" formControlName="pickUpBusinessName" [placeholder]="'Business Name'">
+            <label>Phone Number:</label>
+            <input type="text" formControlName="pickUpPhoneNumber" [placeholder]="'Phone Number:'">
+        </p>
+        <p>
+            <label>Address:</label>
+            <input type="text" formControlName="pickUpAddress" [placeholder]="'Pick Up Address'">
+        </p>
+          <h3> Drop off Location</h3>  
+        <p>
+            <label>First Name:</label>
+            <input type="text" formControlName="dropOffFirstName" [placeholder]="'First Name'">
+            <label>Last Name:</label>
+            <input type="text" formControlName="dropOffLastName" [placeholder]="'Last Name'">
+        </p>
+        <p>
+            <label>Business Name:</label>
+            <input type="text" formControlName="dropOffBusinessName" [placeholder]="'Business Name'">
+            <label>Phone Number:</label>
+            <input type="text" formControlName="dropOffPhoneNumber" [placeholder]="'Phone Number'">
+        </p>
+        <p>
+            <label>Address:</label>
+            <input type="text" formControlName="dropOffAddress" [placeholder]="'Drop Off Address'">
+        </p>
+        <h3> Order Details</h3>  
+        <label>Orderid:</label>
+        <input type="text" formControlName="orderId" [placeholder]="'Order Id'">
+        <div formArrayName="order_items">
+            <div  class ="item-div" *ngFor="let item of orderItems.controls; let pointIndex=index" [formGroupName]="pointIndex">
+            <label>
+              Item: <input type="text" formControlName="item" />
+              Quantity: <input type="text" formControlName="quantity" />
+              Size: <input type="text" formControlName="size" />
+            </label>
+            </div>
+            <p>
+                <button  class="btn" type="button" (click)="addSellingPoint()">Add Items</button>
+            </p>
+          </div>
+        <p>
+            <button  class="btn btn-primary"  type="submit" [disabled]="!form.valid">Review Order</button>
+        </p>
+    </form>
+    <div *ngIf="quoteCreated">
+        <div class="container">
+            <div class="row">
+                <h3 class="text-center"> Delivery Quote </h3>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Delivered By
+                </div>
+                <div class="col-md">
+                    {{quote.dropoff_eta}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Delivery Fee
+                </div>
+                <div class="col-md">
+                    {{quote.fee}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Expires
+                </div>
+                <div class="col-md">
+                    {{quote.expires}}
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="btn btn-primary col-md-5 col-md-center" type="button" (click)="createDelivery()"> Create Delivery</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="deliveryCreated">
+        <div class="container">
+            <div class="row">
+                <h3 class="text-center"> Delivery for {{ deliveryResponse.dropoff.name }} </h3>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                  <h5>  Delivery Info </h5>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Delivered By
+                </div>
+                <div class="col-md">
+                    {{quote.dropoff_eta}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Pick up At
+                </div>
+                <div class="col-md">
+                    {{deliveryResponse.pickup.name}}
+                    {{deliveryResponse.pickup.address }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Drop Off At
+                </div>
+                <div class="col-md">
+                    {{deliveryResponse.dropoff.name}}
+                    {{deliveryResponse.dropoff.address }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Created
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.created}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                   Deadline 
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.dropoff_deadline}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Pick Up Eta
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.pickup_eta}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Drop Off Eta
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.dropoff_eta}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Order Details
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                  <h5> Order Details </h5>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Manifest 
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.manifest.manifest_items }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Manifest Reference
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.manifest.reference }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    Delivery Fee
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.fee }} 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    TIP
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.tip }} 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                  <h5> Tracking </h5>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    External Tracking Url
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.tracking_url }} 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                  <h5>  Delivery Progress </h5>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    {{ deliveryResponse.updated }}
+                </div>
+                <div class="col-md">
+                    {{ deliveryResponse.status }} 
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'postmates-takehome';
+
+  tabChanged(tabChangeEvent: number) {
+    console.log('tab selected: ' + tabChangeEvent);
+  }
 }
